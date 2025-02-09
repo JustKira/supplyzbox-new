@@ -1,0 +1,125 @@
+services:
+  minio:
+    image: minio/minio
+    ports:
+      - '9100:9100'
+      - '9101:9101'
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-storage:/data
+    command: server /data --address ":9100" --console-address ":9101"
+
+  surrealdb:
+    image: surrealdb/surrealdb:v2.0.4
+    ports:
+      - '7000:7000'
+    volumes:
+      - surrealdb-data:/var/lib/surrealdb
+    command: start --log debug --user ${SURREALDB_USER} --pass ${SURREALDB_PASS} --bind 0.0.0.0:7000
+      file:/var/lib/surrealdb/surrealdb.db
+    environment:
+      - SURREALDB_USER=${SURREALDB_USER}
+      - SURREALDB_PASS=${SURREALDB_PASS}
+    user: root
+
+  hanko-migrate:
+    image: ghcr.io/teamhanko/hanko:main-5023a53-2025-01-13.115906
+    depends_on:
+      hanko-postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_DIALECT=postgres
+      - DATABASE_HOST=hanko-postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=${HANKO_DB_USER}
+      - DATABASE_DATABASE=${HANKO_DB_NAME}
+    command: migrate up
+    networks:
+      - hanko-network
+    restart: on-failure
+
+  hanko:
+    image: ghcr.io/teamhanko/hanko:main-5023a53-2025-01-13.115906
+    depends_on:
+      hanko-migrate:
+        condition: service_completed_successfully
+    ports:
+      - '8100:8000'
+      - '8101:8001'
+    environment:
+      - SERVICE_NAME=${HANKO_SERVICE_NAME}
+      - DATABASE_DIALECT=postgres
+      - DATABASE_HOST=hanko-postgres
+      - DATABASE_PORT=${HANKO_DB_PORT}
+      - DATABASE_USER=${HANKO_DB_USER}
+      - DATABASE_DATABASE=${HANKO_DB_NAME}
+      - EMAIL_ENABLED=false
+      - PASSKEY_ENABLED=false
+      - THIRD_PARTY_ALLOWED_REDIRECT_URLS=${HANKO_THIRD_PARTY_ALLOWED_REDIRECT_URLS}
+      - THIRD_PARTY_REDIRECT_URL=${HANKO_THIRD_PARTY_REDIRECT_URL}
+      - THIRD_PARTY_DEFAULT_REDIRECT_URL=${HANKO_THIRD_PARTY_DEFAULT_REDIRECT_URL}
+      - THIRD_PARTY_ERROR_REDIRECT_URL=${HANKO_THIRD_PARTY_ERROR_REDIRECT_URL}
+      - THIRD_PARTY_PROVIDERS_GOOGLE_ENABLED=true
+      - THIRD_PARTY_PROVIDERS_GOOGLE_CLIENT_ID=${HANKO_THIRD_PARTY_PROVIDERS_GOOGLE_CLIENT_ID}
+      - THIRD_PARTY_PROVIDERS_GOOGLE_SECRET=${HANKO_THIRD_PARTY_PROVIDERS_GOOGLE_SECRET}
+
+    command: serve all
+    networks:
+      - hanko-network
+    restart: unless-stopped
+
+  hanko-postgres:
+    image: postgres:14-alpine
+    user: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${HANKO_DB_USER}
+      - POSTGRES_PASSWORD=${HANKO_DB_PASSWORD}
+      - POSTGRES_DB=${HANKO_DB_NAME}
+    volumes:
+      - hanko-postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: pg_isready -U ${HANKO_DB_USER} -d ${HANKO_DB_NAME}
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - hanko-network
+
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '5000:3000'
+  #   environment:
+  #     - PUBLIC_SURREALDB_ENDPOINT=${PUBLIC_SURREALDB_ENDPOINT}
+  #     - PUBLIC_SURREALDB_NS=${PUBLIC_SURREALDB_NS}
+  #     - PUBLIC_SURREALDB_DB=${PUBLIC_SURREALDB_DB}
+  #     - PUBLIC_MINIO_ENDPOINT=${PUBLIC_MINIO_ENDPOINT}
+  #     - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+  #     - MINIO_PORT=${MINIO_PORT}
+  #     - MINIO_USE_SSL=${MINIO_USE_SSL}
+  #     - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+  #     - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+  #     - PUBLIC_HANKO_API_URL=${PUBLIC_HANKO_API_URL}
+  #   depends_on:
+  #     surrealdb:
+  #       condition: service_started
+  #     minio:
+  #       condition: service_started
+  #   restart: on-failure
+
+volumes:
+  surrealdb-data:
+  minio-storage:
+  hanko-postgres-data:
+
+networks:
+  hanko-network:
+    driver: bridge
