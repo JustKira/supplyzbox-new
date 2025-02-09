@@ -8,6 +8,7 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
+		"types": ["unplugin-icons/types/svelte"],
 		"strict": true,
 		"moduleResolution": "bundler"
 	}

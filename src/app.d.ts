@@ -2,6 +2,9 @@
 // for information about these interfaces
 declare global {
 	namespace App {
+		interface Locals {
+			surreal: Surreal;
+		}
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}

@@ -78,4 +78,79 @@
 	body:lang(ar) {
 		@apply font-primary-arabic;
 	}
+
+	hanko-auth,
+	hanko-login,
+	hanko-profile {
+		/* Color Variables */
+		--color: hsl(var(--foreground));
+		--color-shade-1: hsl(var(--muted-foreground));
+		--color-shade-2: hsl(var(--accent));
+		--brand-color: hsl(var(--primary));
+		--brand-color-shade-1: hsl(var(--primary));
+		--brand-contrast-color: hsl(var(--primary-foreground));
+		--background-color: hsl(var(--background));
+		--error-color: hsl(var(--destructive));
+		--link-color: hsl(var(--primary));
+
+		/* Consistent Styling Across Themes */
+		--border-radius: var(--radius); /* Uses your Tailwind radius variable */
+		--border-width: 1px;
+		--border-style: solid;
+		--border-color: hsl(var(--border));
+
+		/* Font Styling */
+		--font-family: 'Montserrat', sans-serif;
+		--font-size: 14px;
+		--font-weight: 600;
+
+		/* Input and Button Styling */
+		--input-border-radius: var(--radius);
+		--button-border-radius: var(--radius);
+
+		/* Additional Customizations */
+		--container-padding: 30px;
+		--container-max-width: 400px;
+		--item-height: 40px;
+	}
+
+	hanko-profile::part(input),
+	hanko-auth::part(input),
+	hanko-login::part(input) {
+		@apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+	}
+
+	hanko-profile::part(button),
+	hanko-auth::part(button),
+	hanko-login::part(button) {
+		@apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+	}
+
+	hanko-profile::part(primary-button),
+	hanko-auth::part(primary-button),
+	hanko-login::part(primary-button) {
+		@apply bg-primary text-primary-foreground hover:bg-primary/90;
+	}
+
+	hanko-profile::part(secondary-button),
+	hanko-auth::part(secondary-button),
+	hanko-login::part(secondary-button) {
+		@apply border-none bg-secondary text-secondary-foreground hover:bg-secondary/80;
+	}
+
+	hanko-profile::part(headline1),
+	hanko-login::part(headline1) {
+		@apply text-2xl font-medium;
+	}
+
+	hanko-profile::part(link),
+	hanko-login::part(link) {
+		@apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+		@apply mt-2 text-primary underline-offset-4 hover:underline;
+	}
+
+	hanko-profile::part(paragraph),
+	hanko-login::part(paragraph) {
+		@apply text-sm font-normal text-muted-foreground;
+	}
 }
