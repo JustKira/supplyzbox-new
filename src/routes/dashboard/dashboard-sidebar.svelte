@@ -20,7 +20,7 @@
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton
 							isActive={checkRouteMatch('/dashboard', page.url.pathname) ||
-								checkRouteMatch('/dashboard/*rest', page.url.pathname)}
+								checkRouteMatch('/dashboard/order/*rest', page.url.pathname)}
 						>
 							{#snippet child({ props })}
 								<a href={'/dashboard'} {...props}>
@@ -29,23 +29,27 @@
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
 						<Sidebar.MenuButton
-							isActive={checkRouteMatch('/user', page.url.pathname) ||
-								checkRouteMatch('/user/*rest', page.url.pathname)}
+							isActive={checkRouteMatch('/dashboard/user', page.url.pathname) ||
+								checkRouteMatch('/dashboard/user/*rest', page.url.pathname)}
 						>
 							{#snippet child({ props })}
-								<a href={'/user'} {...props}>
+								<a href={'/dashboard/user'} {...props}>
 									<Users />
 									<span>Users</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
 						<Sidebar.MenuButton
-							isActive={checkRouteMatch('/voucher', page.url.pathname) ||
-								checkRouteMatch('/voucher/*rest', page.url.pathname)}
+							isActive={checkRouteMatch('/dashboard/voucher', page.url.pathname) ||
+								checkRouteMatch('/dashboard/voucher/*rest', page.url.pathname)}
 						>
 							{#snippet child({ props })}
-								<a href={'/voucher'} {...props}>
+								<a href={'/dashboard/voucher'} {...props}>
 									<Voucher />
 									<span>Voucher</span>
 								</a>
@@ -61,22 +65,24 @@
 				<Sidebar.Menu>
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton
-							isActive={checkRouteMatch('/category', page.url.pathname) ||
-								checkRouteMatch('/category/*rest', page.url.pathname)}
+							isActive={checkRouteMatch('/dashboard/category', page.url.pathname) ||
+								checkRouteMatch('/dashboard/category/*rest', page.url.pathname)}
 						>
 							{#snippet child({ props })}
-								<a href={'/category'} {...props}>
+								<a href={'/dashboard/category'} {...props}>
 									<Package />
 									<span>Categories</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
 						<Sidebar.MenuButton
-							isActive={checkRouteMatch('/product', page.url.pathname) ||
-								checkRouteMatch('/product/*rest', page.url.pathname)}
+							isActive={checkRouteMatch('/dashboard/product', page.url.pathname) ||
+								checkRouteMatch('/dashboard/product/*rest', page.url.pathname)}
 						>
 							{#snippet child({ props })}
-								<a href={'/product'} {...props}>
+								<a href={'/dashboard/product'} {...props}>
 									<PencilRuler />
 									<span>Products</span>
 								</a>
