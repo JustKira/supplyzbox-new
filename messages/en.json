@@ -1,4 +1,13 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+
+	"welcome": "Welcome to our website!",
+	"hero_title": "Get all your School supplies in few clicks!!",
+	"hero_subtitle": "We provide all the school supplies you need for your kids. Just select your school and grade and we will deliver it to your doorstep.",
+	"select_school": "Select your school",
+	"select_grade": "Select your grade",
+	"school": "School",
+	"grade": "Grade",
+	"order_now": "Order now",
+	"next": "Next"
 }
