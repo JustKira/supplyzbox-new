@@ -26,7 +26,6 @@ const getUserInfo = async (token: string) => {
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	const data = await request.json();
-	console.log('Request', data);
 
 	try {
 		const { token } = userCreateRequestSchema.parse(data);
