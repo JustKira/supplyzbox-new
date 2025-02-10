@@ -3,10 +3,10 @@ import { i18n } from '$lib/i18n';
 import { type Handle, redirect, type RequestEvent } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
-import { match } from 'path-to-regexp';
 
 import { env } from '$env/dynamic/public';
 import { surreal } from '$lib/surrealdb/ssr';
+import { storage } from '$lib/minio';
 import { checkRouteMatch } from '$lib/helpers/check-route-match';
 
 const handleParaglide: Handle = i18n.handle();
@@ -50,4 +50,9 @@ export const surrealdbHandle: Handle = async ({ event, resolve }) => {
 	return await resolve(event);
 };
 
-export const handle = sequence(hankoHandle, surrealdbHandle, handleParaglide);
+export const storageHandle: Handle = async ({ event, resolve }) => {
+	event.locals.minio = await storage;
+	return await resolve(event);
+};
+
+export const handle = sequence(hankoHandle, surrealdbHandle, handleParaglide, storageHandle);

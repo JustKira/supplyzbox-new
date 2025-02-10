@@ -26,7 +26,7 @@
 					<Label>
 						{m.school()}
 					</Label>
-					<Select.Root>
+					<Select.Root type="single">
 						<Select.Trigger class="h-12 rounded-full bg-muted/50 sm:h-14">
 							{m.select_school()}
 						</Select.Trigger>
@@ -37,7 +37,7 @@
 					<Label>
 						{m.grade()}
 					</Label>
-					<Select.Root>
+					<Select.Root type="single">
 						<Select.Trigger class="h-12 rounded-full bg-muted/50 sm:h-14">
 							{m.select_grade()}
 						</Select.Trigger>
