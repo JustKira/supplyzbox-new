@@ -1,0 +1,7 @@
+DEFINE TABLE OVERWRITE user SCHEMALESS;
+DEFINE FIELD OVERWRITE email ON TABLE user TYPE string;
+DEFINE FIELD OVERWRITE phone_number ON TABLE user TYPE string;
+DEFINE ANALYZER OVERWRITE email_analyzer TOKENIZERS blank FILTERS lowercase, ascii, ngram(3,5);
+DEFINE ANALYZER OVERWRITE phone_analyzer TOKENIZERS blank FILTERS ngram(3,5);
+DEFINE INDEX OVERWRITE email_index ON user FIELDS email SEARCH ANALYZER email_analyzer BM25;
+DEFINE INDEX OVERWRITE phone_index ON user FIELDS phone_number SEARCH ANALYZER phone_analyzer BM25;

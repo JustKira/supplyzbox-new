@@ -7,7 +7,7 @@
 
 <Sidebar.Provider>
 	<DashboardSidebar />
-	<main>
+	<main class="flex-1 py-2 pr-2">
 		{@render children?.()}
 	</main>
 </Sidebar.Provider>

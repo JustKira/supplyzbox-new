@@ -8,10 +8,13 @@
 	import PencilRuler from '~icons/ph/pencil-ruler';
 	import Voucher from '~icons/ph/seal-percent';
 	import HouseLine from '~icons/ph/house-line';
+	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
 <Sidebar.Root variant="floating">
-	<Sidebar.Header />
+	<Sidebar.Header>
+		<h1 class="px-2 pt-2 font-mono font-black uppercase text-muted-foreground">Supplyzbox</h1>
+	</Sidebar.Header>
 	<Sidebar.Content>
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>General</Sidebar.GroupLabel>
@@ -93,5 +96,15 @@
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
 	</Sidebar.Content>
-	<Sidebar.Footer />
+	<Sidebar.Footer>
+		<Sidebar.Menu>
+			<Sidebar.MenuItem>
+				<Sidebar.MenuButton>
+					{#snippet child({ props })}
+						<Button variant="outline" href={'/'} {...props}>Landing Page</Button>
+					{/snippet}
+				</Sidebar.MenuButton>
+			</Sidebar.MenuItem>
+		</Sidebar.Menu>
+	</Sidebar.Footer>
 </Sidebar.Root>

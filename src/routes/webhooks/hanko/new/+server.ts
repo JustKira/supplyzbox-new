@@ -1,3 +1,4 @@
+import { CreateUserSchema } from '$lib/surrealdb/models/user/schema';
 import type { RequestHandler } from '@sveltejs/kit';
 import * as jose from 'jose';
 import { z } from 'zod';
@@ -34,10 +35,11 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			data: { id, emails, identities }
 		} = await getUserInfo(token);
 
+		const dataValidated = CreateUserSchema.parse({ hanko_id: id, email: emails[0].address });
+
 		try {
 			await locals.surreal.query('CREATE user:ulid() SET hanko_id=$hanko_id,email=$email', {
-				hanko_id: id,
-				email: emails[0].address
+				...dataValidated
 			});
 		} catch (error) {
 			console.error('Error creating user', error);
