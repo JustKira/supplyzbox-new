@@ -1,6 +1,6 @@
 import { UserSurrealDBModel } from '$lib/surrealdb/models/user/model';
 import { zod } from 'sveltekit-superforms/adapters';
-import { message, superValidate } from 'sveltekit-superforms';
+import { fail, message, superValidate } from 'sveltekit-superforms';
 import { UpdateUserSchema } from '$lib/surrealdb/models/user/schema';
 import { SurrealDbError } from 'surrealdb';
 
@@ -23,7 +23,7 @@ export const actions = {
 		const model = new UserSurrealDBModel(locals.surreal);
 
 		if (!form.valid) {
-			return message(form, 'Invalid form');
+			return fail(400, form);
 		}
 
 		try {
@@ -31,9 +31,7 @@ export const actions = {
 			return message(form, { text: 'User updated' });
 		} catch (error) {
 			if (error instanceof SurrealDbError) {
-				return message(form, 'Something went wrong', {
-					status: 500
-				});
+				return fail(500, form);
 			}
 		}
 	}

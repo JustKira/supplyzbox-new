@@ -7,7 +7,6 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Select from '$lib/components/ui/select';
 	import UserGear from '~icons/ph/user-gear';
-	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	let data: {
@@ -28,8 +27,6 @@
 			} else if (result.type === 'failure') {
 				toast.error('Failed to submit form');
 			}
-
-			await invalidate('user:update');
 		}
 	});
 

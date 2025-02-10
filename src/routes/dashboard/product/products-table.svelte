@@ -1,58 +1,56 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import * as Table from '$lib/components/ui/table';
-	import { queryParameters, ssp } from 'sveltekit-search-params';
+	import { Button } from '$lib/components/ui/button';
 
-	let { data } = $props();
+	import Pencil from '~icons/ph/pencil';
+	import PencilRuler from '~icons/ph/pencil-ruler';
 
-	const params = queryParameters(
-		{
-			page: ssp.number(1)
-		},
-		{
-			showDefaults: false
-		}
-	);
+	import type { Product } from '$lib/surrealdb/models/product';
+
+	let {
+		result,
+		count,
+		page = $bindable()
+	}: { result: Product[]; count: number; page?: number } = $props();
 </script>
 
-<section class="flex flex-col gap-2 overflow-clip rounded-lg border p-4">
+<div class="flex flex-col gap-2 overflow-clip rounded-lg border p-4">
 	<Table.Root class="w-full">
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="w-64">Email</Table.Head>
-
-				<Table.Head>Name</Table.Head>
-				<Table.Head>Phone Number</Table.Head>
+				<Table.Head>Actions</Table.Head>
+				<Table.Head class="w-full">Name</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#await data.users}
-				<Table.Row>
-					<Table.Cell>Loading...</Table.Cell>
+			{#each result as product}
+				<Table.Row class="cursor-pointer hover:bg-transparent">
+					<Table.Cell class="flex gap-0.5">
+						<Button
+							size="icon"
+							variant="outline"
+							href={`/dashboard/product/${product.id.split(':')[1]}`}
+						>
+							<Pencil />
+						</Button>
+						<Button variant="outline" href={`/dashboard/product/${product.id.split(':')[1]}`}>
+							<PencilRuler /> + Variants
+						</Button>
+					</Table.Cell>
+					<Table.Cell class="font-medium">{product.name}</Table.Cell>
 				</Table.Row>
-			{:then { result }}
-				{#each result as user}
-					<Table.Row
-						onclick={() => goto(`/dashboard/user/${user.id.split(':')[1]}`)}
-						class="cursor-pointer"
-					>
-						<Table.Cell class="font-medium">{user.email}</Table.Cell>
-
-						<Table.Cell>{user.first_name} {user.last_name}</Table.Cell>
-						<Table.Cell>{user.phone_number}</Table.Cell>
-					</Table.Row>
-				{/each}
-			{/await}
+			{/each}
 		</Table.Body>
 	</Table.Root>
+
 	<Pagination.Root
 		class="sticky bottom-5 flex w-fit items-start rounded-lg border bg-accent/50 p-2 backdrop-blur-sm"
-		count={data.users.count}
+		{count}
 		perPage={15}
-		page={params.page ?? 1}
+		page={page ?? 1}
 		onPageChange={(p) => {
-			params.page = p;
+			page = p;
 		}}
 	>
 		{#snippet children({ pages, currentPage })}
@@ -79,4 +77,4 @@
 			</Pagination.Content>
 		{/snippet}
 	</Pagination.Root>
-</section>
+</div>

@@ -7,7 +7,7 @@
 
 <main class="flex h-[calc(100vh-theme(space.12))] items-center justify-center p-2 md:py-24">
 	<section
-		class="container flex h-full flex-1 flex-col justify-between gap-2 rounded-lg border bg-muted/25 p-2"
+		class="container flex h-full flex-1 flex-col justify-between gap-2 rounded-xl border bg-muted/25 p-2"
 	>
 		<div class="flex flex-col gap-2 rounded-md border bg-background p-4">
 			<h1 class="text-xl font-black uppercase md:text-4xl">

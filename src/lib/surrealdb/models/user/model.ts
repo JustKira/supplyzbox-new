@@ -51,7 +51,7 @@ export class UserSurrealDBModel {
 			}
 		);
 
-		return jsonify({ result, count: count.count });
+		return jsonify({ result, count: count?.count || 0 });
 	}
 
 	async getUsersByEmail(page: number = 0, limit: number = 15, email: string) {

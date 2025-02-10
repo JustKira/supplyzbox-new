@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import type { PageData } from './$types';
 	import UpdateUserForm from './update-user-form.svelte';
 
-	let { data }: { data: PageData } = $props();
+	let { data } = $props();
 
 	$effect(() => {
 		$inspect(data.user);
