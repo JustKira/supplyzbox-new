@@ -35,6 +35,16 @@ export class UserSurrealDBModel {
 		return jsonify(result);
 	}
 
+	async getUserHankoId(hanko_id: string) {
+		const [result] = await this.surreal.query<Array<User | undefined>>(
+			`SELECT * FROM ONLY user WHERE hanko_id=$hanko_id LIMIT 1`,
+			{
+				hanko_id
+			}
+		);
+		return jsonify(result);
+	}
+
 	async getUsers(page: number = 0, limit: number = 15) {
 		let [result, count] = await this.surreal.query<[User[], { count: number }]>(
 			`

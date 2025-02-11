@@ -44,7 +44,6 @@ export const actions = {
 			return fail(400, form);
 		}
 
-		console.log(new RecordId('category', category).toString());
 		try {
 			await model.create({ ...form.data, category: new RecordId('category', category) });
 			return message(form, { text: 'Product created' });

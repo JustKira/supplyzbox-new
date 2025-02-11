@@ -38,10 +38,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		const dataValidated = CreateUserSchema.parse({ hanko_id: id, email: emails[0].address });
 
 		try {
-			await locals.surreal.query('CREATE user:ulid() SET hanko_id=$hanko_id,email=$email', {
-				...dataValidated,
-				phone_number: ''
-			});
+			await locals.surreal.query(
+				'CREATE user:ulid() SET hanko_id=$hanko_id,email=$email,role=$role',
+				{
+					...dataValidated,
+					role: 'USER'
+				}
+			);
 		} catch (error) {
 			console.error('Error creating user', error);
 

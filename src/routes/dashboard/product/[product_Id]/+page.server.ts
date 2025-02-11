@@ -10,7 +10,7 @@ import {
 	CreateProductVariantSchema,
 	ProductVariantSurrealDBModel
 } from '$lib/surrealdb/models/variant';
-import { RecordId } from 'surrealdb';
+import { snakeCase } from 'change-case';
 
 export const load = async ({ request, url, locals, params }) => {
 	const productVariantModel = new ProductVariantSurrealDBModel(locals.surreal);
@@ -41,7 +41,7 @@ export const actions = {
 		const { image, ...rest } = form.data;
 
 		const fileBuffer = await image.arrayBuffer();
-		const filePath = `products/${form.data.name}/${form.data.image.name}`;
+		const filePath = `products/${snakeCase(form.data.name)}/${snakeCase(form.data.image.name)}`;
 		try {
 			await locals.minio.putObject(
 				'public',
