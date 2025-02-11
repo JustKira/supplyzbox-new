@@ -17,12 +17,8 @@ services:
       - '7000:7000'
     volumes:
       - surrealdb-data:/var/lib/surrealdb
-    command:
-      start --log debug --unauthenticated --user ${SURREALDB_USER} --pass ${SURREALDB_PASS} --bind 0.0.0.0:7000
+    command: start --log debug --unauthenticated --bind 0.0.0.0:7000
       file:/var/lib/surrealdb/surrealdb.db
-    environment:
-      - SURREALDB_USER=${SURREALDB_USER}
-      - SURREALDB_PASS=${SURREALDB_PASS}
     user: root
 
   hanko-migrate:

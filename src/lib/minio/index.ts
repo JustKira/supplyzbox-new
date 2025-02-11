@@ -13,15 +13,18 @@ export const storage = remember('Minio', async () => {
 	});
 
 	if (!(await client.bucketExists('public'))) {
-		await createBucket('public', client);
+		await createBucket('public', ['products'], client);
 	}
 
 	console.log('[SUCCESS] Minio client created');
 	return client;
 });
 
-const createBucket = async (bucketName: string, client: Client) => {
+const createBucket = async (bucketName: string, paths: string[], client: Client) => {
 	await client.makeBucket(bucketName);
+
+	const resources = paths.map((path) => `arn:aws:s3:::${bucketName}/${path}/*`);
+
 	await client.setBucketPolicy(
 		bucketName,
 		JSON.stringify({
@@ -29,9 +32,9 @@ const createBucket = async (bucketName: string, client: Client) => {
 			Statement: [
 				{
 					Effect: 'Allow',
-					Principal: '*',
+					Principal: { AWS: ['*'] },
 					Action: ['s3:GetObject'],
-					Resource: [`arn:aws:s3:::${bucketName}/*`, `arn:aws:s3:::${bucketName}/*`]
+					Resource: resources
 				}
 			]
 		})

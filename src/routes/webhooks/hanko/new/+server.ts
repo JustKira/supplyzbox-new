@@ -39,7 +39,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		try {
 			await locals.surreal.query('CREATE user:ulid() SET hanko_id=$hanko_id,email=$email', {
-				...dataValidated
+				...dataValidated,
+				phone_number: ''
 			});
 		} catch (error) {
 			console.error('Error creating user', error);

@@ -1,3 +1,4 @@
+const surql001 = `
 DEFINE TABLE OVERWRITE user SCHEMALESS;
 DEFINE FIELD OVERWRITE email ON TABLE user TYPE string;
 DEFINE FIELD OVERWRITE phone_number ON TABLE user TYPE string;
@@ -10,3 +11,5 @@ DEFINE ANALYZER OVERWRITE name_analyzer TOKENIZERS blank FILTERS lowercase, asci
 DEFINE TABLE OVERWRITE product SCHEMALESS;
 DEFINE FIELD OVERWRITE name ON TABLE product TYPE string;
 DEFINE INDEX OVERWRITE name_index ON product FIELDS name SEARCH ANALYZER name_analyzer BM25;
+`;
+export const migrations: string[] = [surql001];

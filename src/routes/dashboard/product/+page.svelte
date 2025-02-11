@@ -27,7 +27,8 @@
 			search: ssp.string('')
 		},
 		{
-			debounceHistory: 150
+			debounceHistory: 350,
+			showDefaults: false
 		}
 	);
 </script>
