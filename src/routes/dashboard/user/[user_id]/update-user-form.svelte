@@ -70,18 +70,6 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		</div>
-		<Form.Field {form} name="email">
-			<Form.Control>
-				{#snippet children({ props })}
-					<div class="flex flex-col gap-1">
-						<Form.Label>Email</Form.Label>
-						<Input bind:value={$formData.email} {...props} />
-					</div>
-				{/snippet}
-			</Form.Control>
-
-			<Form.FieldErrors />
-		</Form.Field>
 		<Form.Field {form} name="phone_number">
 			<Form.Control>
 				{#snippet children({ props })}

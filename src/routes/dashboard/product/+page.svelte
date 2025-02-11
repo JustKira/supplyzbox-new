@@ -6,6 +6,7 @@
 	import AddProductForm from './add-product-form.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import ProductsTable from './products-table.svelte';
+	import QuickPagination from '$lib/components/quick-pagination.svelte';
 
 	let { data } = $props();
 
@@ -20,20 +21,28 @@
 		}
 	);
 
-	const paramsDebounced = queryParameters(
-		{
-			page: ssp.number(1),
+	// const paramsDebounced = queryParameters(
+	// 	{
+	// 		page: ssp.number(1),
 
-			search: ssp.string('')
-		},
-		{
-			debounceHistory: 350,
-			showDefaults: false
-		}
-	);
+	// 		search: ssp.string('')
+	// 	},
+	// 	{
+	// 		debounceHistory: 350,
+	// 		showDefaults: false
+	// 	}
+	// );
 </script>
 
-<section class="flex flex-col gap-2">
+<main class="flex gap-2">
+	<section class="h-fit w-full rounded-lg border bg-accent p-[2px]">
+		<div class="flex h-fit flex-col gap-2 overflow-clip rounded-md border bg-background">
+			<ProductsTable result={data.products.result} />
+		</div>
+		<QuickPagination bind:page={params.page} count={data.products.count} />
+	</section>
+</main>
+<!-- <section class="flex flex-col gap-2">
 	<div class="flex gap-3 rounded-lg border bg-accent/25 p-3">
 		<div class="w-full max-w-80">
 			<Label>Category</Label>
@@ -83,4 +92,4 @@
 		count={data.products.count}
 		result={data.products.result}
 	/>
-</section>
+</section> -->

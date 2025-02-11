@@ -48,6 +48,10 @@ const config: Config = {
 					DEFAULT: 'hsl(var(--card) / <alpha-value>)',
 					foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
 				},
+				brand: {
+					DEFAULT: 'hsl(var(--brand) / <alpha-value>)',
+					foreground: 'hsl(var(--brand-foreground) / <alpha-value>)'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

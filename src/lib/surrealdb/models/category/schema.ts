@@ -10,7 +10,12 @@ export const CreateCategorySchema = CategorySchema.pick({
 });
 
 export const UpdateCategorySchema = z.object({
-	name: z.string().optional()
+	id: z.string().ulid(),
+	name: z.string()
+});
+
+export const DeleteCategorySchema = z.object({
+	id: z.string().ulid()
 });
 
 export type Category = z.infer<typeof CategorySchema>;

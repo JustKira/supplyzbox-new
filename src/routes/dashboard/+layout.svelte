@@ -5,9 +5,9 @@
 	let { children } = $props();
 </script>
 
-<Sidebar.Provider class="flex flex-1">
+<Sidebar.Provider class="flex flex-1 bg-accent">
 	<DashboardSidebar />
-	<main class="max-h-screen flex-1 py-2 pr-2">
+	<div class=" max-h-screen flex-1 py-2 pr-2">
 		{@render children?.()}
-	</main>
+	</div>
 </Sidebar.Provider>

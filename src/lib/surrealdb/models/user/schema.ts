@@ -17,7 +17,6 @@ export const CreateUserSchema = UserSchema.pick({
 });
 
 export const UpdateUserSchema = z.object({
-	email: z.string().email().optional(),
 	role: z.enum(['USER', 'ADMIN']).default('USER').optional(),
 	phone_number: z.string().optional(),
 	first_name: z.string().optional(),

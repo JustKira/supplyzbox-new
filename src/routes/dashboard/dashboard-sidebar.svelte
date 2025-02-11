@@ -8,6 +8,7 @@
 	import PencilRuler from '~icons/ph/pencil-ruler';
 	import Voucher from '~icons/ph/seal-percent';
 	import HouseLine from '~icons/ph/house-line';
+	import School from '~icons/ph/graduation-cap';
 	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
@@ -42,6 +43,19 @@
 								<a href={'/dashboard/user'} {...props}>
 									<Users />
 									<span>Users</span>
+								</a>
+							{/snippet}
+						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
+						<Sidebar.MenuButton
+							isActive={checkRouteMatch('/dashboard/school', page.url.pathname) ||
+								checkRouteMatch('/dashboard/school/*rest', page.url.pathname)}
+						>
+							{#snippet child({ props })}
+								<a href={'/dashboard/school'} {...props}>
+									<School />
+									<span>Schools</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>

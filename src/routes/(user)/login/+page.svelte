@@ -2,11 +2,12 @@
 	import { register } from '@teamhanko/hanko-elements';
 	import { onMount } from 'svelte';
 
-	import { goto } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { env } from '$env/dynamic/public';
 	const hankoApi = env.PUBLIC_HANKO_API_URL;
 
-	const redirectAfterLogin = () => {
+	const redirectAfterLogin = async () => {
+		await invalidateAll();
 		goto('/');
 	};
 

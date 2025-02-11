@@ -16,6 +16,24 @@ export class CategorySurrealDBModel {
 		}
 	}
 
+	async update(id: string, data: Partial<Category>) {
+		try {
+			return await this.surreal.merge(new RecordId('category', id), data);
+		} catch (error) {
+			console.error('Error updating category', error);
+			throw new Error('Error updating category');
+		}
+	}
+
+	async delete(id: string) {
+		try {
+			return await this.surreal.delete(new RecordId('category', id));
+		} catch (error) {
+			console.error('Error deleting category', error);
+			throw new Error('Error deleting category');
+		}
+	}
+
 	async getAll(): Promise<{ result: Category[] }> {
 		const [result] = await this.surreal.query<[Category[]]>(`SELECT * FROM category`);
 		return jsonify({ result });
