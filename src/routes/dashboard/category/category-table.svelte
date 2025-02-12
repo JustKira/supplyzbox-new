@@ -2,18 +2,18 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 
-	import Pencil from '~icons/ph/pencil';
-	import PencilRuler from '~icons/ph/pencil-ruler';
 	import CheckFat from '~icons/ph/check-fat';
 	import CheckFatFilled from '~icons/ph/check-fat-fill';
 
-	import type { Product } from '$lib/surrealdb/models/product';
+	import PencilRuler from '~icons/ph/pencil-ruler';
 
-	let { result, selected = $bindable(null) }: { result: Product[]; selected: Product | null } =
+	import type { Category } from '$lib/surrealdb/models/category';
+
+	let { result, selected = $bindable(null) }: { result: Category[]; selected: Category | null } =
 		$props();
 </script>
 
-<Table.Root class="w-full">
+<Table.Root>
 	<Table.Header>
 		<Table.Row>
 			<Table.Head class="min-w-12"></Table.Head>
@@ -22,10 +22,10 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each result as product}
-			{@const isSelected = selected?.id === product.id}
+		{#each result as category}
+			{@const isSelected = selected?.id === category.id}
 			<Table.Row
-				onclick={() => (selected = product)}
+				onclick={() => (selected = category)}
 				data-selected={isSelected}
 				class="group cursor-pointer"
 			>
@@ -40,17 +40,14 @@
 						{/if}
 					</div>
 				</Table.Cell>
-				<Table.Cell class="font-medium">{product.name}</Table.Cell>
+				<Table.Cell class="font-medium">{category.name}</Table.Cell>
 				<Table.Cell class="flex gap-0.5">
 					<Button
-						size="icon"
-						variant="outline"
-						href={`/dashboard/product/${product.id.split(':')[1]}`}
+						variant={'secondary'}
+						size={'sm'}
+						href={`/dashboard/product?category=${category.id.split(':')[1]}`}
 					>
-						<Pencil />
-					</Button>
-					<Button variant="outline" href={`/dashboard/product/${product.id.split(':')[1]}`}>
-						<PencilRuler /> + Variants
+						<PencilRuler /> + Products
 					</Button>
 				</Table.Cell>
 			</Table.Row>

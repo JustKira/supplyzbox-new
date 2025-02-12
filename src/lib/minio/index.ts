@@ -23,8 +23,6 @@ export const storage = remember('Minio', async () => {
 const createBucket = async (bucketName: string, paths: string[], client: Client) => {
 	await client.makeBucket(bucketName);
 
-	const resources = paths.map((path) => `arn:aws:s3:::${bucketName}/${path}/*`);
-
 	await client.setBucketPolicy(
 		bucketName,
 		JSON.stringify({
@@ -34,7 +32,7 @@ const createBucket = async (bucketName: string, paths: string[], client: Client)
 					Effect: 'Allow',
 					Principal: { AWS: ['*'] },
 					Action: ['s3:GetObject'],
-					Resource: resources
+					Resource: `arn:aws:s3:::${bucketName}/*`
 				}
 			]
 		})

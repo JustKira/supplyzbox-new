@@ -36,9 +36,9 @@
 <form
 	method="post"
 	action="?/add-variant"
-	use:enhance
 	enctype="multipart/form-data"
 	class="flex w-full max-w-96 shrink-0 flex-col gap-2"
+	use:enhance
 >
 	<Form.Field {form} name="name">
 		<Form.Control>

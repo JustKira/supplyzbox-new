@@ -27,24 +27,22 @@
 	const { form: formData, enhance, delayed } = form;
 </script>
 
-<div class="flex gap-2">
-	<form
-		method="post"
-		action="?/add"
-		use:enhance
-		class="flex w-full max-w-96 shrink-0 items-end gap-2"
-	>
-		<Form.Field {form} name="name">
-			<Form.Control>
-				{#snippet children({ props })}
-					<div class="flex flex-col gap-1">
-						<Form.Label>Name</Form.Label>
-						<Input bind:value={$formData.name} {...props} />
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
+<form
+	method="post"
+	action="?/add"
+	use:enhance
+	class="flex w-full max-w-96 shrink-0 items-end gap-2"
+>
+	<Form.Field {form} name="name">
+		<Form.Control>
+			{#snippet children({ props })}
+				<div class="flex flex-col gap-1">
+					<Form.Label>Name</Form.Label>
+					<Input bind:value={$formData.name} {...props} />
+				</div>
+			{/snippet}
+		</Form.Control>
+	</Form.Field>
 
-		<Form.Button disabled={$delayed} variant="brand" class="w-32">Add</Form.Button>
-	</form>
-</div>
+	<Form.Button disabled={$delayed} variant="brand" class="w-32">Add</Form.Button>
+</form>

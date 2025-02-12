@@ -17,6 +17,7 @@
 	const form = superForm(data.form, {
 		validators: zodClient(DeleteCategorySchema),
 		resetForm: true,
+
 		onSubmit() {
 			toast.loading('Deleting Category...', { id: 'LOADING' });
 		},
@@ -45,7 +46,7 @@
 			<Dialog.Header>
 				<Dialog.Title>Delete Category</Dialog.Title>
 				<Dialog.Description
-					>Are you sure you want to delete this category? this action is irreversible</Dialog.Description
+					>Are you sure you want to delete this School? this action is irreversible</Dialog.Description
 				>
 			</Dialog.Header>
 			<form method="post" action="?/delete" use:enhance>

@@ -9,6 +9,8 @@
 	import Voucher from '~icons/ph/seal-percent';
 	import HouseLine from '~icons/ph/house-line';
 	import School from '~icons/ph/graduation-cap';
+	import Garage from '~icons/ph/garage';
+
 	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
@@ -102,6 +104,19 @@
 								<a href={'/dashboard/product'} {...props}>
 									<PencilRuler />
 									<span>Products</span>
+								</a>
+							{/snippet}
+						</Sidebar.MenuButton>
+					</Sidebar.MenuItem>
+					<Sidebar.MenuItem>
+						<Sidebar.MenuButton
+							isActive={checkRouteMatch('/dashboard/stock', page.url.pathname) ||
+								checkRouteMatch('/dashboard/stock/*rest', page.url.pathname)}
+						>
+							{#snippet child({ props })}
+								<a href={'/dashboard/stock'} {...props}>
+									<Garage />
+									<span>Stock</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>

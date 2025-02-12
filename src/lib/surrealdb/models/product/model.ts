@@ -9,7 +9,17 @@ export class ProductSurrealDBModel {
 
 	async create(data: z.infer<typeof CreateProductSchema>) {
 		try {
-			return await this.surreal.create(new RecordId('product', ulid()), data);
+			await this.surreal.query(
+				`
+			BEGIN TRANSACTION;
+			
+			LET $product_id = (CREATE ONLY product:ulid() SET name=$name).id;
+			RELATE $product_id->included_in:ulid()->$category_id;
+
+			COMMIT TRANSACTION;
+			`,
+				{ ...data, category_id: new RecordId('category', data.category) }
+			);
 		} catch (error) {
 			console.error('Error creating product', error);
 			throw new Error('Error creating product');
@@ -34,8 +44,8 @@ export class ProductSurrealDBModel {
 			`
 				BEGIN TRANSACTION;
 	
-				SELECT *, string::similarity::fuzzy(name,$search) as fuzzy_score FROM product WHERE category=$category ORDER BY fuzzy_score DESC LIMIT $limit START $start;
-				SELECT count() FROM ONLY product WHERE category=$category GROUP BY count LIMIT 1;
+				SELECT *, string::similarity::fuzzy(name,$search) as fuzzy_score FROM product WHERE ->included_in->(category WHERE id=$category) ORDER BY fuzzy_score DESC LIMIT $limit START $start;
+				SELECT count() FROM ONLY product WHERE ->included_in->(category WHERE id=$category) GROUP BY count LIMIT 1;
 	
 				COMMIT TRANSACTION;
 				`,
@@ -62,8 +72,8 @@ export class ProductSurrealDBModel {
 			`
 				BEGIN TRANSACTION;
 	
-				SELECT *, search::score(1) AS score FROM product WHERE name@1@$search OR name=$search AND category=$category ORDER BY score DESC LIMIT $limit START $start;
-				SELECT count() FROM ONLY product WHERE name@1@$search OR name=$search AND category=$category GROUP BY count LIMIT 1;
+				SELECT *, search::score(1) AS score FROM product WHERE name@1@$search OR name=$search AND ->included_in->(category WHERE id=$category) ORDER BY score DESC LIMIT $limit START $start;
+				SELECT count() FROM ONLY product WHERE name@1@$search OR name=$search AND ->included_in->(category WHERE id=$category) GROUP BY count LIMIT 1;
 	
 				COMMIT TRANSACTION;
 				`,
@@ -92,8 +102,8 @@ export class ProductSurrealDBModel {
 			`
 				BEGIN TRANSACTION;
 	
-				SELECT * FROM product WHERE category=$category ORDER BY id DESC LIMIT $limit START $start;
-				SELECT count() FROM ONLY product WHERE category=$category GROUP BY count LIMIT 1;
+				SELECT * FROM product WHERE ->included_in->(category WHERE id=$category) ORDER BY id DESC LIMIT $limit START $start;
+				SELECT count() FROM ONLY product WHERE ->included_in->(category WHERE id=$category) GROUP BY count LIMIT 1;
 	
 				COMMIT TRANSACTION;
 				`,

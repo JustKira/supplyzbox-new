@@ -17,35 +17,34 @@ export const load = async ({ request, url, locals }) => {
 	const search = ssp.string().decode(url.searchParams.get('search'));
 	const category = ssp.string().decode(url.searchParams.get('category'));
 
-	const form = await superValidate(request, zod(CreateProductSchema.omit({ category: true })));
+	const addForm = await superValidate(request, zod(CreateProductSchema));
 
 	const categories = await categoryModel.getAll();
 	const products =
 		search && category
 			? await productModel.getTextSearchWithPagination(search, category, page)
 			: await productModel.getByPage(category, page);
-
+	const triggerUpdate = Math.random().toString(36).substring(7);
 	return {
 		categories,
 		products,
-		form
+		addForm,
+		triggerUpdate
 	};
 };
 
 export const actions = {
-	'add-product': async ({ request, locals, url }) => {
-		const form = await superValidate(request, zod(CreateProductSchema.omit({ category: true })));
-
-		const category = ssp.string().decode(url.searchParams.get('category'));
+	add: async ({ request, locals, url }) => {
+		const form = await superValidate(request, zod(CreateProductSchema));
 
 		const model = new ProductSurrealDBModel(locals.surreal);
 
-		if (!form.valid || !category) {
+		if (!form.valid) {
 			return fail(400, form);
 		}
 
 		try {
-			await model.create({ ...form.data, category: new RecordId('category', category) });
+			await model.create(form.data);
 			return message(form, { text: 'Product created' });
 		} catch {
 			return fail(500, form);

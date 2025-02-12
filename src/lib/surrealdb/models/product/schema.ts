@@ -3,13 +3,12 @@ import { z } from 'zod';
 const ProductSchema = z.object({
 	id: z.string().ulid(),
 	name: z.string().nonempty().min(3),
-	category: z.string().ulid(),
+	category: z.string().ulid()
 });
 
 export const CreateProductSchema = ProductSchema.pick({
-	name: true
-}).extend({
-	category: z.unknown()
+	name: true,
+	category: true
 });
 
 export const UpdateProductSchema = z.object({

@@ -9,12 +9,12 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	let data: {
-		form: SuperValidated<Omit<Infer<typeof CreateProductSchema>, 'category'>>;
-		category?: string;
+		form: SuperValidated<Infer<typeof CreateProductSchema>>;
+		category: string;
 	} = $props();
 
 	const form = superForm(data.form, {
-		validators: zodClient(CreateProductSchema.omit({ category: true })),
+		validators: zodClient(CreateProductSchema),
 		resetForm: true,
 		dataType: 'json',
 		onSubmit() {
@@ -31,34 +31,28 @@
 	});
 
 	const { form: formData, enhance, delayed } = form;
+
+	$effect(() => {
+		$formData.category = data.category;
+	});
 </script>
 
-<div class="flex items-end gap-2">
-	<div
-		data-category-selected={Boolean(data.category)}
-		class="flex gap-2 duration-300 data-[category-selected=false]:opacity-50"
-	>
-		<form
-			method="post"
-			action="?/add-product&category={data.category}"
-			use:enhance
-			class="flex w-full max-w-96 shrink-0 items-end gap-2"
-		>
-			<Form.Field {form} name="name">
-				<Form.Control>
-					{#snippet children({ props })}
-						<div class="flex flex-col gap-1">
-							<Form.Label>Product Name</Form.Label>
-							<Input bind:value={$formData.name} {...props} />
-						</div>
-					{/snippet}
-				</Form.Control>
-			</Form.Field>
+<form
+	method="post"
+	action="?/add"
+	use:enhance
+	class="flex w-full max-w-96 shrink-0 items-end gap-2"
+>
+	<Form.Field {form} name="name">
+		<Form.Control>
+			{#snippet children({ props })}
+				<div class="flex flex-col gap-1">
+					<Form.Label>Name</Form.Label>
+					<Input bind:value={$formData.name} {...props} />
+				</div>
+			{/snippet}
+		</Form.Control>
+	</Form.Field>
 
-			<Form.Button disabled={!data.category || $delayed} class="w-24">Add</Form.Button>
-		</form>
-	</div>
-	{#if !data.category}
-		<h1 class="font-mono text-xs text-yellow-300">Select a category to add a product</h1>
-	{/if}
-</div>
+	<Form.Button disabled={$delayed} variant="brand" class="w-32">Add</Form.Button>
+</form>
